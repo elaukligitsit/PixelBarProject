@@ -1,0 +1,39 @@
+{
+    "name": "node-ejs",
+    "version": "1.0.0",
+    "main": "server.js",
+    "dependencies": {
+        "axios": "^0.21.1",
+        "chai": "^4.2.0",
+        "chai-http": "^4.3.0",
+        "chart.js": "^3.7.1",
+        "dotenv": "^10.0.0",
+        "ejs": "^3.1.6",
+        "ejs-lint": "^1.1.0",
+        "express": "^4.17.1",
+        "got": "^9.6.0",
+        "mocha": "^9.2.0",
+        "mongodb": "^4.4.1",
+        "needle": "^3.0.0",
+        "node": "^17.7.1",
+        "npm-run-all": "^4.1.5",
+        "oauth-1.0a": "^2.2.6",
+        "pg-promise": "^10.7.0",
+        "query-string": "^6.14.1"
+    },
+    "scripts": {
+        "test": "mocha",
+        "start": "node server.js",
+        "dev": "nodemon server.js",
+        "testandrun": "npm-run-all test start"
+    },
+    "engines": {
+        "node": ">=12.0"
+    },
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "devDependencies": {
+        "nodemon": "^2.0.7"
+    }
+}

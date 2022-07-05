@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Map</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+      <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="https://code.highcharts.com/maps/highmaps.js"></script>
+<script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" src='../../resources/map.css'>
+  </head>
+  <body style="background:#2b2a33">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/home">Home<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/map">Map<span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <h1 class="text-light" align="center">
+        <img class="rounded-circle" src="https://pbs.twimg.com/media/E17LPpxUUAQwwUh.png" alt="" width="100" height="100">
+    </h1>
+</br>
+</br>
+
+    <div id="container">
+        
+        
+
+    </div>
+
+
+    </body>
+
+    <script> var mapsWork = [];</script>
+    <%popularityData.forEach(function(popularityData) { %>
+        <script>
+            var pushMe = [//bulding array of data needed for map
+            "<%-popularityData.code%>".toLowerCase(),Number("<%-popularityData.value%>")
+            ]
+            mapsWork.push(pushMe); //get data for map
+         </script>
+    <% }); %>
+
+    <script>
+        (async () => {
+            const mapData = await fetch(
+                'https://code.highcharts.com/mapdata/custom/world.topo.json'
+            ).then(response => response.json());
+            // const data = await fetch(
+            //     'https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data/world-population-density.json'
+            // ).then(response => response.json());
+            console.log(mapsWork);//should be an array of key, value pairs formed ['us', 10] ['two letter country code', number of occurences]
+            // Initialize the chart
+            Highcharts.mapChart('container', {
+                colors: ["#f1c40f", "#2ecc71", "#9b59b6", "#e74c3c", "#34495e", "#3498db", "#1abc9c", "#f39c12", "#d35400"],
+                chart: {//displays world map
+                    "backgroundColor": "#34495e",
+                    map: mapData,
+                    
+                 },
+                title: {
+                    text: 'Popularity By Country:'
+                },
+                mapNavigation: {
+                    enabled: true,
+                    buttonOptions: {
+                        verticalAlign: 'bottom'
+                    }
+                },
+                mapView: {
+                    projection: {
+                        name: 'WebMercator'
+                    },
+                    zoom: 1
+                },
+                colorAxis: {
+                    min: 1,
+                    max: 100,
+                    type: 'logarithmic'
+                },
+                legend: {
+                    title: {
+                        text: 'Popularity Of Cocktail Name'//should pass req from url to customize these
+                    }
+                },
+                series: [{
+                    data: mapsWork,//takes data and displays on world map
+                    name: 'Popularity',
+                    states: {
+                        hover: {
+                            color: '#a4edba'
+                        }
+                    },
+                    tooltip: {
+                        valueSuffix: '/km²'//coult try to use highmaps population density data to normalize ours
+                    }
+                }]
+            });
+            })();
+    </script>
+
+
+
+</html>
+<div id="tweetainer">
+    <blockquote class="twitter-tweet"><p lang="en" dir="ltr"><a href='https://twitter.com/LiquorOnMcLeod/status/"<%tweets.id%>"'</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
